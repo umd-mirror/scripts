@@ -1,0 +1,6 @@
+#!/bin/bash
+
+HOST=rsync://rsync.mirrorservice.org/ftp.gimp.org/pub/
+#HOST=rsync://ftp.gnome.org/gimp
+
+$RSYNC $STOPTS $HOST $BASE/gimp

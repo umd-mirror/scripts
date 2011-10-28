@@ -1,0 +1,3 @@
+#!/bin/bash
+
+$RSYNC $STOPTS rsync://rsync.mirrorservice.org/dl.sourceforge.net/pub/sourceforge/a/project/am/amanda/ $BASE/amanda --exclude=index.html

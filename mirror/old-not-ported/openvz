@@ -1,0 +1,5 @@
+#!/bin/bash
+
+HOST=rsync://download.openvz.org/openvz-download/
+
+$RSYNC $STOPTS $HOST $BASE/openvz

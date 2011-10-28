@@ -1,0 +1,15 @@
+import os
+import subprocess
+
+from . import MirrorRunner, EXTRAS
+
+class FedoraEPELMirrorRunner(MirrorRunner):
+  base_subdir = 'fedora/epel'
+  # source = 'rsync://download.wpi.edu:874/fedora-epel/'
+  source = 'rsync://fedora-archives.ibiblio.org/fedora-epel/'
+  rsync_filter_list = ['- debug', '- repoview', '- /testing', '- SRPMS']
+
+  def post_update(self, verbose, dry_run):
+    if not dry_run:
+      subprocess.call([os.path.join(EXTRAS, 'report_mirror'), '-c', os.path.join(EXTRAS, 'report_mirror.conf')])
+

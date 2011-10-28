@@ -1,0 +1,6 @@
+#!/bin/bash
+
+$RSYNC $STOPTS rsync://ftp.belnet.be/packages/damnsmalllinux/ $BASE/damnsmall
+
+
+

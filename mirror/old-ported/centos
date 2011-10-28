@@ -1,0 +1,7 @@
+#!/bin/bash
+
+HOST=rsync://us-msync.centos.org/CentOS
+#HOST=rsync://131.211.85.43/CentOS
+#HOST=rsync://archive.linux.duke.edu:874/centos
+
+$RSYNC --delete-excluded $STOPTS $HOST $BASE/centos --exclude='/3*' --exclude='/2*'

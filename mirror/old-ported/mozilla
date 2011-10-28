@@ -1,0 +1,8 @@
+#!/bin/bash
+
+#PATH=rsync://releases-rsync.mozilla.org/mozilla/
+PATH=rsync://mozilla-osl.osuosl.org/mozilla/
+
+/bin/cp $SCRIPTS/patterns/mozilla-custom $SCRIPTS/patterns/mozilla && \
+/bin/cat $BASE/mozilla/zz/rsyncd-mozilla-current.exclude >> $SCRIPTS/patterns/mozilla && \
+$RSYNC $STOPTS $PATH $BASE/mozilla --filter=". $SCRIPTS/patterns/mozilla" --delete-excluded

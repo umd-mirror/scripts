@@ -1,0 +1,30 @@
+#!/bin/bash
+
+#HOST=rsync://mirrors.acm.jhu.edu/ubuntu/
+# rsync://mirrors.jgi-psf.org/ubuntu/
+HOST=rsync://archive.ubuntu.com/ubuntu/
+# rsync://lug.mtu.edu/ubuntu/
+#HOST=rsync://mirrors.rit.edu/ubuntu/
+
+# Grab the updated repository description file tree
+$RSYNC ${HOST} $BASE/../mgmt/ubuntu-tmp $STOPTS --delete-excluded \
+  --exclude=/dists/dapper* --exclude=/dists/hardy* --exclude=/dists/intrepid* \
+  --exclude=/dists/jaunty* \
+  --exclude=/pool --exclude=/cdimage --exclude=/releases
+
+# Fetch the files listed in the Packages.{gz,bz2} files
+bzcat $BASE/../mgmt/ubuntu-tmp/dists/*/*/binary-*/Packages.bz2 | grep -E '^Filename: ' | cut -b 11- | sort > $BASE/../mgmt/ubuntu.toget 
+$RSYNC $STOPTS --files-from=$BASE/../mgmt/ubuntu.toget $HOST $BASE/ubuntu
+
+# Remove files that have been replaced
+cd $BASE/ubuntu
+find pool -type f | sort > $BASE/../mgmt/ubuntu.old
+for file in `diff --speed-large-files $BASE/../mgmt/ubuntu.old $BASE/../mgmt/ubuntu.toget | grep -E '^<' | tr -d '< '`;
+  do
+    rm $file;
+done
+
+# Sync the repository description onto the public tree
+$RSYNC $STOPTS $BASE/../mgmt/ubuntu-tmp/ $BASE/ubuntu --exclude=/pool -L
+
+date > $BASE/ubuntu/project/trace/mirror.umoss.org

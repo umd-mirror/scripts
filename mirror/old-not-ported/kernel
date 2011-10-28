@@ -1,0 +1,5 @@
+#!/bin/bash
+
+$RSYNC $STOPTS rsync://rsync.kernel.org/pub/ $BASE/kernel \
+--exclude=*.gz --exclude=*.gz.sign --exclude=*.gz.asc \
+--include=/ --include=/linux --include=/software --exclude=/*

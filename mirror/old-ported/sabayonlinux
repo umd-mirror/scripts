@@ -1,0 +1,11 @@
+#!/bin/bash
+
+# rsync://mirror.cs.vt.edu/sabayonlinux/ = error
+#HOST=rsync://distro.ibiblio.org/distros/sabayonlinux/
+#HOST=rsync://mirror.cs.vt.edu/sabayonlinux/
+HOST=rsync.sabayonlinux.org::SabayonLinux
+HOST=ftp.surfnet.nl::sabayonlinux
+
+$RSYNC $STOPTS $HOST $BASE/sabayonlinux --exclude='/.*' --exclude=/entropy/.{*_history,subversion,config} --exclude='iso/*5.3*'
+
+

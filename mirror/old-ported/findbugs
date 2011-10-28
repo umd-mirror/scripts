@@ -1,0 +1,3 @@
+#!/bin/bash
+
+$RSYNC $STOPTS rsync://rsync.mirrorservice.org/download.sourceforge.net/pub/sourceforge/f/project/fi/findbugs/ $BASE/findbugs

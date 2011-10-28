@@ -1,0 +1,7 @@
+#!/bin/bash
+
+#HOST=rsync://distro.ibiblio.org/distros/archlinux/
+#HOST=rsync://rsync.archlinux.org/ftp/
+HOST=rsync://mirror.rit.edu/archlinux/
+
+$RSYNC $STOPTS $HOST $BASE/archlinux --exclude=iso/2007.* --exclude=iso/2008.* --exclude=iso/2009.* --delete-excluded

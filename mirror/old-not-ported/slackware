@@ -1,0 +1,18 @@
+#!/bin/bash
+
+TDS=rsync://slackware.mirrors.tds.net/slackware/
+UTAH=rsync://slackware.cs.utah.edu/slackware/
+OSUPUB=rsync://slackware.osuosl.org/slackware/
+SLACK=rsync://ftp.slackware.com/slackware/
+MSERV=rsync://rsync.mirrorservice.org/ftp.slackware.com/pub/slackware/
+
+SRC=$MSERV
+
+$RSYNC $STOPTS --partial -H \
+$SRC \
+$BASE/slackware \
+--filter=". $PATTERNS/slackware" --max-delete=1000 --delete-excluded
+
+# date > $BASE/fedora/mirror.cs.umd.edu
+
+# $SCRIPTS/report_mirror -c $SCRIPTS/report_mirror.conf

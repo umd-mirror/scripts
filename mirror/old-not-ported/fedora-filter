@@ -1,0 +1,17 @@
+#!/bin/bash
+
+cd $BASE/fedora
+
+for i in `find * -perm 755 -type f`; do
+  ln -f $i ../fedora-public/$i
+done
+
+find * -perm 750 > $BASE/fedora.private.list
+
+$RSYNC $STOPTS -H \
+$BASE/fedora/ \
+$BASE/fedora-public \
+--exclude-from=$BASE/fedora.private.list \
+--delete-excluded -m
+
+#rm $BASE/fedora.public.list

@@ -1,0 +1,3 @@
+#!/bin/bash
+
+$RSYNC $STOPTS -H --delete --delete-excluded -m /export/big/mirror/fedora/ rsync://species.umd.edu/full/fedora --exclude=releases/**/Fedora/*/iso

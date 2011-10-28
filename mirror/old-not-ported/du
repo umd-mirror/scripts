@@ -1,0 +1,12 @@
+#!/bin/bash
+
+cd /export/big/mirror/pub
+
+# du --max-depth 2 -mc amanda/ archlinux/ debian/ download.ospdev.net/ fedora/ findbugs/ gentoo/ \
+# gentoo-portage/ kernel/ knoppix/ mozdev/ mozilla/ openoffice/ opensuse/ pclinuxos/ sabayonlinux/ \
+# slackware/ ubuntu/ ubuntu-iso/ videolan/ | grep -vE '(download.ospdev.net|gentoo-portage|mozdev)/[a-z]' > web/du.tmp
+
+du --max-depth 2 -mc * | grep -vE '(download.ospdev.net|gentoo-portage|mozdev|mozilla/addons)/[0-9a-z]' > ../web/du.tmp
+
+cp -f ../web/du.tmp ../web/du.txt
+

@@ -1,0 +1,6 @@
+- /.*
+- /entropy/.*_history
+- /entropy/.subversion
+- /entropy/.config
+- iso/*5.3*
+- iso/daily

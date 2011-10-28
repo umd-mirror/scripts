@@ -1,0 +1,8 @@
+#!/bin/bash
+
+# acm.cs.rpi.edu ?
+#HOST=rsync://rsync7.us.gentoo.org/gentoo-portage/
+#HOST=rsync://rsync.us.gentoo.org/gentoo-portage/
+HOST=rsync://ftp.ussg.iu.edu/gentoo-portage/
+
+$RSYNC $STOPTS $HOST $BASE/gentoo-portage

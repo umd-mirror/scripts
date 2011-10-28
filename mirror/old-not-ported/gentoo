@@ -1,0 +1,10 @@
+#!/bin/bash
+
+# rsync://distro.ibiblio.org/gentoo/
+# HOST=rsync://gentoo.chem.wisc.edu/gentoo/
+HOST=rsync://ftp.ussg.iu.edu/gentoo-distfiles/
+
+$RSYNC $STOPTS $HOST $BASE/gentoo --exclude=/{experimental,grp,releases} --exclude=THIS-FILE-SHOULD-NOT-BE-PUBLIC.txt --delete-excluded
+
+
+

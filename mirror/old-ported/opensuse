@@ -1,0 +1,5 @@
+#!/bin/bash
+
+HOST=rsync://rsync.opensuse.org/opensuse-full/opensuse/ #hotstuff-80gb
+
+$RSYNC $STOPTS $HOST $BASE/opensuse --filter=". $PATTERNS/opensuse"

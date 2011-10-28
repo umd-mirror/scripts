@@ -1,0 +1,5 @@
+#!/bin/bash
+
+HOST=rsync://ftp.calculate-linux.ru/calculate/
+
+$RSYNC $STOPTS $HOST $BASE/calculate

@@ -1,0 +1,9 @@
+#!/bin/bash
+# knoppix.cs.wisc.edu/knoppix apparently went down..
+
+# uni-kl.de is a 'recommended master site for mirrors'
+
+$RSYNC $STOPTS rsync://ftp.uni-kl.de/knoppix/ $BASE/knoppix
+
+
+

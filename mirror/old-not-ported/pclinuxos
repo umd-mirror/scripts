@@ -1,0 +1,4 @@
+#!/bin/bash
+
+$RSYNC $STOPTS rsync://spout.ussg.indiana.edu/pclinuxos/ $BASE/pclinuxos
+

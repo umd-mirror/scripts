@@ -1,0 +1,3 @@
+#!/bin/bash
+
+$RSYNC $STOPTS rsync://download.videolan.org/videolan-ftp/ $BASE/videolan --delete-excluded --exclude=testing

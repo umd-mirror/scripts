@@ -1,0 +1,18 @@
+#!/bin/bash
+
+#HOST=rsync://download.wpi.edu:874/fedora-enchilada/linux/
+HOST=rsync://archive.linux.duke.edu:874/fedora/linux/
+
+$RSYNC $STOPTS -H \
+$HOST \
+$BASE/fedora/linux \
+--filter=". $PATTERNS/fedora" \
+-m --partial --delete-excluded
+
+date -u > $BASE/fedora/mirror.umoss.org.txt
+
+$RSYNC $STOPTS rsync://download.wpi.edu:874/fedora-epel/ $BASE/fedora/epel --exclude={debug,repoview,/testing,SRPMS}
+
+$SCRIPTS/report_mirror -c $SCRIPTS/report_mirror.conf
+# $SCRIPTS/report_mirror -c $SCRIPTS/report_mirror-oncampus.conf
+

@@ -1,0 +1,7 @@
+#!/bin/bash
+
+# IU's rsync module just disappeared ... - K, 2008.7.1
+#HOST=rsync://ftp.ussg.iu.edu/openoffice/
+HOST=rsync://ftp.snt.utwente.nl/openoffice/
+
+$RSYNC $STOPTS $HOST $BASE/openoffice --include=/contrib --include=/stable --exclude=/*

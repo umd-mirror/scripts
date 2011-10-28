@@ -1,0 +1,26 @@
+#!/bin/bash
+
+export STOPTS="-aq --delete --delete-delay"
+export BASE="/export/big/mirror/pub"
+export SCRIPTS="/export/big/mirror/scripts"
+export PATTERNS="/export/big/mirror/scripts/patterns"
+export RSYNC="/export/software/mirror/bin/rsync"
+export LOGFILE="/export/software/mirror/var/log/mirror.log"
+export LOCKDIR="/export/software/mirror/var/run/mirror"
+export QUIET=yes
+
+for script in $@; do
+  start="`date +%s` (`date +%Y.%m.%d\ %H:%M:%S`)"
+  lock=$LOCKDIR/$script.lock
+  if [ -f $lock ]; then
+    echo $start -- skipping $script:cron >> $LOGFILE
+    echo "skipping $script"
+  else
+    touch $lock
+    echo $start -- beginning $script:cron >> $LOGFILE
+    bash $SCRIPTS/$script 2>&1 | sed "s/^/$script: /"
+    # | tee -a $LOGFILE
+    echo "`date +%s` (`date +%Y.%m.%d\ %H:%M:%S`) -- finished $script:cron from $start" >> $LOGFILE
+    rm -f $lock
+  fi
+done

@@ -1,0 +1,13 @@
+#!/bin/bash
+
+# Pedram Azimaie
+# carp3co@gmail.com
+
+CMD="/usr/bin/wget -m ftp://download.ospdev.net/ -X /Debian -X /parslinuxlive -X /esunlinux"
+
+cd $BASE
+if [ "x$QUIET" = "xyes" ]; then
+ $CMD -q
+else
+ $CMD
+fi

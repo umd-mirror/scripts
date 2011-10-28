@@ -1,0 +1,16 @@
+#!/bin/bash
+#set -x
+#SRC=rsync://mirrors.acm.jhu.edu/debian/
+#SRC=rsync://debian.osuosl.org/debian/
+#SRC=rsync://debian.lcs.mit.edu/debian/
+SRC=rsync://rsync.gtlib.gatech.edu/debian/
+
+$RSYNC $STOPTS $SRC $BASE/debian --exclude=*-{alpha,amd64,arm,armel,hppa,ia64,mips,mipsel,powerpc,s390,sparc}* --include=dists --include=dists/lenny* --exclude=dists/* --exclude='/*'
+bzcat $BASE/debian/dists/lenny/*/binary-i386/Packages.bz2 | grep -E '^Filename: ' | cut -b 11- | sort > $BASE/../mgmt/debian.toget 
+$RSYNC $STOPTS --files-from=$BASE/../mgmt/debian.toget $SRC $BASE/debian
+cd $BASE/debian
+find pool -type f | sort > $BASE/../mgmt/debian.old
+for file in `diff --speed-large-files $BASE/../mgmt/debian.old $BASE/../mgmt/debian.toget | grep -E '^<' | tr -d '< '`;
+  do
+    rm $file;
+done
