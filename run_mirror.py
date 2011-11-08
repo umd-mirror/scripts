@@ -33,7 +33,7 @@ if __name__ == '__main__':
         for module_name in dir(runner_module):
           item = getattr(runner_module, module_name)
           if inspect.isclass(item) and item != mirror.MirrorRunner and issubclass(item, mirror.MirrorRunner):
-            if item != mirror.APTMirrorRunner:
+            if item != mirror.APTMirrorRunner and item != mirror.RsyncMirrorRunner:
               if verbose:
                 print "Running", item
               runner = item()
