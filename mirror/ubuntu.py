@@ -1,6 +1,6 @@
-from . import MirrorRunner, APTMirrorRunner
+from . import RsyncMirrorRunner, APTMirrorRunner
 
-class UbuntuMirrorRunner(MirrorRunner):
+class UbuntuMirrorRunner(RsyncMirrorRunner):
   source = 'rsync://archive.ubuntu.com/ubuntu/'
 
   rsync_delete_delay = True

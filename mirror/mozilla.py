@@ -2,9 +2,9 @@ import os
 import shutil
 import tempfile
 
-from . import MirrorRunner, EXTRAS
+from . import RsyncMirrorRunner, EXTRAS
 
-class MozillaMirrorRunner(MirrorRunner):
+class MozillaMirrorRunner(RsyncMirrorRunner):
   source = 'rsync://mozilla-osl.osuosl.org/mozilla/'
   rsync_delete_excluded = True
 

@@ -1,5 +1,5 @@
-from . import MirrorRunner
+from . import RsyncMirrorRunner
 
-class CalculateMirrorRunner(MirrorRunner):
+class CalculateMirrorRunner(RsyncMirrorRunner):
   source = 'rsync://ftp.calculate-linux.ru/calculate/'
 

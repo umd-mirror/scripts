@@ -1,6 +1,6 @@
-from . import MirrorRunner
+from . import RsyncMirrorRunner
 
-class UbuntuISOMirrorRunner(MirrorRunner):
+class UbuntuISOMirrorRunner(RsyncMirrorRunner):
   #source = 'rsync://rsync.releases.ubuntu.com/releases/'
   #source = 'rsync://rsync.gtlib.gatech.edu/ubuntu-releases/'
   #source = 'rsync://mirror.lstn.net/ubuntu-releases/'

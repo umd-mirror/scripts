@@ -72,16 +72,6 @@ def rsync(source, dest, archive=False, verbose=False, preserve_perm=False, dry_r
 class MirrorRunner:
   base = None # Full path to target
   base_subdir = None # Path within mirrors directory (base overrides)
-  source = None
-
-  rsync_archive = True
-  rsync_preserve_perm = False
-  rsync_delete = True
-  rsync_delete_excluded = False
-  rsync_delete_delay = False
-  rsync_delay_updates = False
-  rsync_filter_from = None
-  rsync_filter_list = None
 
   def __init__(self):
     self.module_name = self.__class__.__module__[7:]
@@ -100,6 +90,24 @@ class MirrorRunner:
     pass
 
   def update(self, verbose, dry_run):
+    pass
+
+  def post_update(self, verbose, dry_run):
+    pass
+
+class RsyncMirrorRunner(MirrorRunner):
+  source = None
+
+  rsync_archive = True
+  rsync_preserve_perm = False
+  rsync_delete = True
+  rsync_delete_excluded = False
+  rsync_delete_delay = False
+  rsync_delay_updates = False
+  rsync_filter_from = None
+  rsync_filter_list = None
+
+  def update(self, verbose, dry_run):
     if self.rsync_filter_list is not None:
       if self.rsync_filter_from is not None:
         raise Exception("you cannot specify both rsync_filter_from and rsync_filter_list")
@@ -110,14 +118,11 @@ class MirrorRunner:
 
     rsync(self.source, self.base, self.rsync_archive, verbose, self.rsync_preserve_perm, dry_run, self.rsync_delete_excluded, self.rsync_filter_from, self.rsync_delete, verbose, self.rsync_delete_delay, self.rsync_delay_updates)
 
-    if not dry_run:
-      subprocess.call("date > %s/mirror.umd.edu.txt" % self.base, shell=True)
-
     if self.rsync_filter_list is not None:
       os.unlink(self.rsync_filter_from)
 
-  def post_update(self, verbose, dry_run):
-    pass
+    if not dry_run:
+      subprocess.call("date > %s/mirror.umd.edu.txt" % self.base, shell=True)
 
 class APTMirrorRunner(MirrorRunner):
   apt_releases = []

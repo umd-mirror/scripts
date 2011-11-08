@@ -1,6 +1,6 @@
-from . import MirrorRunner
+from . import RsyncMirrorRunner
 
-class GentooMirrorRunner(MirrorRunner):
+class GentooMirrorRunner(RsyncMirrorRunner):
   source = 'rsync://ftp.ussg.iu.edu/gentoo-distfiles/'
 
   rsync_filter_list = ['- /releases/.test/THIS-FILE-SHOULD-NOT-BE-PUBLIC.txt']

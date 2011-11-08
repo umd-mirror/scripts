@@ -1,9 +1,9 @@
 import os
 import subprocess
 
-from . import MirrorRunner, EXTRAS
+from . import RsyncMirrorRunner, EXTRAS
 
-class FedoraLinuxMirrorRunner(MirrorRunner):
+class FedoraLinuxMirrorRunner(RsyncMirrorRunner):
   base_subdir = 'fedora/linux'
   source = 'rsync://fedora-archives.ibiblio.org/fedora-enchilada/linux/'
   # source = 'rsync://archive.linux.duke.edu:874/fedora/linux/'

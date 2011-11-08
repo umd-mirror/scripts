@@ -9,15 +9,16 @@
 # TerpLinuxMirrorRunner, and your file will be terplinux.py.
 # To run the script, you'd use `run_mirror.py [-v] [-n] terplinux'.
 
-# Always use this:
-from . import MirrorRunner
+# Always use one of these:
+from . import RsyncMirrorRunner
+from . import APTMirrorRunner
 
 # If you're using files in extras/, you'll need these:
 from . import EXTRAS 
 import os
 
 # Name this class to match your content.
-class TerpLinuxMirrorRunner(MirrorRunner):
+class TerpLinuxMirrorRunner(RsyncMirrorRunner):
   # Note the slash at the end. If you don't include it, rsync
   # might do nasty things, like making a second copy of your archive.
   # It'd probably be safe to automate this, but no.

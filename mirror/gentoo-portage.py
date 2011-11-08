@@ -1,4 +1,4 @@
-from . import MirrorRunner
+from . import RsyncMirrorRunner
 
-class GentooPortageMirrorRunner(MirrorRunner):
+class GentooPortageMirrorRunner(RsyncMirrorRunner):
   source = 'rsync://ftp.ussg.iu.edu/gentoo-portage/'

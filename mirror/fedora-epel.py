@@ -1,9 +1,9 @@
 import os
 import subprocess
 
-from . import MirrorRunner, EXTRAS
+from . import RsyncMirrorRunner, EXTRAS
 
-class FedoraEPELMirrorRunner(MirrorRunner):
+class FedoraEPELMirrorRunner(RsyncMirrorRunner):
   base_subdir = 'fedora/epel'
   # source = 'rsync://download.wpi.edu:874/fedora-epel/'
   source = 'rsync://fedora-archives.ibiblio.org/fedora-epel/'

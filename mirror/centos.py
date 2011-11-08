@@ -1,6 +1,6 @@
-from . import MirrorRunner
+from . import RsyncMirrorRunner
 
-class CentOSMirrorRunner(MirrorRunner):
+class CentOSMirrorRunner(RsyncMirrorRunner):
   source = 'rsync://us-msync.centos.org/CentOS/'
   # rsync_filter_list = ['- /3*', '- /2*']
 

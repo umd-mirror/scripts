@@ -1,6 +1,6 @@
-from . import MirrorRunner
+from . import RsyncMirrorRunner
 
-class ArchLinuxMirrorRunner(MirrorRunner):
+class ArchLinuxMirrorRunner(RsyncMirrorRunner):
   source = 'rsync://mirror.rit.edu/archlinux/'
   #rsync_filter_list = ['- iso/2007.*', '- iso/2008.*', '- iso/2009.*']
   rsync_delete_delay = True

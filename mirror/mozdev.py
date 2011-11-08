@@ -1,4 +1,4 @@
-from . import MirrorRunner
+from . import RsyncMirrorRunner
 
-class MozdevMirrorRunner(MirrorRunner):
+class MozdevMirrorRunner(RsyncMirrorRunner):
   source = 'rsync://rsync.mozdev.org/mozdev/'
