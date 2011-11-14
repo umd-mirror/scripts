@@ -5,7 +5,7 @@ import shutil
 import subprocess
 import tempfile
 
-basedir = '/home/mirror/pub'
+basedir = '/export/btr0'
 EXTRAS = '/home/mirror/scripts/mirror/extras'
 
 def get_lock(module):
@@ -44,7 +44,7 @@ def get_lock(module):
 
   return True
 
-def rsync(source, dest, archive=False, verbose=False, preserve_perm=False, dry_run=False, delete_excluded=False, filter_from=None, delete=False, progress=False, delete_delay=False, delay_updates=False):
+def rsync(source, dest, archive=False, verbose=False, preserve_perm=False, dry_run=False, delete_excluded=False, filter_from=None, delete=False, progress=False, delete_delay=False, delay_updates=False, hardlinks=False):
   opts = [
     '-rlt' if archive else None,
     '--delete' if delete else None,
@@ -55,7 +55,8 @@ def rsync(source, dest, archive=False, verbose=False, preserve_perm=False, dry_r
     '--delete-excluded' if delete_excluded else None,
     '--filter=. %s' % filter_from if filter_from else None,
     '--delete-delay' if delete_delay else None,
-    '--delay-updates' if delay_updates else None
+    '--delay-updates' if delay_updates else None,
+    '-H' if hardlinks else None
   ]
 
   opts = [opt for opt in opts if opt] # remove null fields
@@ -100,12 +101,14 @@ class RsyncMirrorRunner(MirrorRunner):
 
   rsync_archive = True
   rsync_preserve_perm = False
+  rsync_preserve_hardlinks = False
   rsync_delete = True
   rsync_delete_excluded = False
   rsync_delete_delay = False
   rsync_delay_updates = False
   rsync_filter_from = None
   rsync_filter_list = None
+
 
   def update(self, verbose, dry_run):
     if self.rsync_filter_list is not None:
@@ -116,7 +119,7 @@ class RsyncMirrorRunner(MirrorRunner):
       filter.write("\n".join(self.rsync_filter_list))
       filter.close()
 
-    rsync(self.source, self.base, self.rsync_archive, verbose, self.rsync_preserve_perm, dry_run, self.rsync_delete_excluded, self.rsync_filter_from, self.rsync_delete, verbose, self.rsync_delete_delay, self.rsync_delay_updates)
+    rsync(self.source, self.base, self.rsync_archive, verbose, self.rsync_preserve_perm, dry_run, self.rsync_delete_excluded, self.rsync_filter_from, self.rsync_delete, verbose, self.rsync_delete_delay, self.rsync_delay_updates, self.rsync_preserve_hardlinks)
 
     if self.rsync_filter_list is not None:
       os.unlink(self.rsync_filter_from)
@@ -137,7 +140,7 @@ class APTMirrorRunner(MirrorRunner):
     #apt_header = os.path.join(EXTRAS, 'apt_header')
 
     apt_cfg.write("set base_path    /home/mirror/var/apt-mirror-%s\n" % self.module_name)
-    apt_cfg.write("set mirror_path  /home/mirror/pub\n")
+    apt_cfg.write("set mirror_path  %s\n" % basedir)
     apt_cfg.write("set _autoclean   1\n")
 
     #shutil.copyfileobj(open(apt_header, 'rb'), apt_cfg)
