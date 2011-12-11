@@ -27,7 +27,7 @@ for row in reader:
   history.append((int(row[0]), int(row[1]), int(row[2])))
 
 # Grab the current in/out gauge readings. These will wrap every 16 million TB, so expect frequent errors
-xin, xout = subprocess.check_output('cat /proc/net/dev | grep eth2 | cut -d : -f 2 | awk \'{print $1, $9}\'', shell=True).split(' ')
+xin, xout = subprocess.check_output('cat /proc/net/dev | grep eth1 | cut -d : -f 2 | awk \'{print $1, $9}\'', shell=True).split(' ')
 
 # Throw out the oldest sample and push our new one onto the list
 history = history[-(num_samples - 1):]
