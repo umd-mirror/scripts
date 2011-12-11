@@ -1,10 +1,10 @@
 from . import RsyncMirrorRunner
 
 class UbuntuISOMirrorRunner(RsyncMirrorRunner):
-  #source = 'rsync://rsync.releases.ubuntu.com/releases/'
+  source = 'rsync://rsync.releases.ubuntu.com/releases/'
   #source = 'rsync://rsync.gtlib.gatech.edu/ubuntu-releases/'
   #source = 'rsync://mirror.lstn.net/ubuntu-releases/'
-  source = 'rsync://mirrors.rit.edu/ubuntu-releases/'
+  #source = 'rsync://mirrors.rit.edu/ubuntu-releases/'
 
   rsync_delete = False
 
