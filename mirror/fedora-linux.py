@@ -12,6 +12,7 @@ class FedoraLinuxMirrorRunner(RsyncMirrorRunner):
 
   rsync_filter_from = os.path.join(EXTRAS, 'fedora-linux.exclude')
   rsync_preserve_hardlinks = True
+  rsync_preserve_perm = True
 
   def post_update(self, verbose, dry_run):
     if not dry_run:
