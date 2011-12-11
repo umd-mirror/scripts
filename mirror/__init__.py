@@ -5,7 +5,7 @@ import shutil
 import subprocess
 import tempfile
 
-basedir = '/export/btr0'
+basedir = '/export/btr0/mirror'
 EXTRAS = '/home/mirror/scripts/mirror/extras'
 
 def get_lock(module):
