@@ -1,0 +1,14 @@
+#!/bin/bash
+# by Matt McCutchen
+# https://bugzilla.samba.org/show_bug.cgi?id=3653#c8
+
+ignoreexit=24
+ignoreout='^(file has vanished: |rsync warning: some files vanished before they could be transferred)'
+set -o pipefail
+/usr/bin/rsync "$@" 2>&1 | (egrep -v "$ignoreout" || true)
+a=$?
+if [ $a == $ignoreexit ]; then
+	exit 0
+else
+	exit $a
+fi

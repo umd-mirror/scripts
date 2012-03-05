@@ -24,6 +24,9 @@ if __name__ == '__main__':
   if len(modules) == 0 or invalid_args:
     print "USAGE: %s [-v] [-n] <mirror names>" % sys.argv[0]
   else:
+    if mirror.is_disabled():
+      print "Mirroring disabled: skipping ", ' + '.join(modules)
+      sys.exit(-1)
     for name in modules:
       if mirror.get_lock(name):
         mirror_imp = __import__("mirror", fromlist=[name])

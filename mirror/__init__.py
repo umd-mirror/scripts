@@ -5,8 +5,11 @@ import shutil
 import subprocess
 import tempfile
 
-basedir = '/export/btr0/mirror'
+basedir = '/home/mirror/archives'
 EXTRAS = '/home/mirror/scripts/mirror/extras'
+
+def is_disabled():
+  return os.access('/home/mirror/disable_mirrors', os.R_OK)
 
 def get_lock(module):
   lock_path = '/home/mirror/scripts/mirror/%s.lock' % module
@@ -61,7 +64,7 @@ def rsync(source, dest, archive=False, verbose=False, preserve_perm=False, dry_r
 
   opts = [opt for opt in opts if opt] # remove null fields
 
-  rsync_cmd = ["/usr/bin/rsync"]
+  rsync_cmd = ["/home/mirror/scripts/rsync-no-vanished"]
   rsync_cmd.extend(opts)
   rsync_cmd.extend([source, dest])
 
