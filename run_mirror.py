@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 import sys
+import os
 #sys.path.append('/home/blah/libexec') ...
 
 import inspect
@@ -27,6 +28,9 @@ if __name__ == '__main__':
     if mirror.is_disabled():
       print "Mirroring disabled: skipping ", ' + '.join(modules)
       sys.exit(-1)
+
+    os.nice(10)
+
     for name in modules:
       if mirror.get_lock(name):
         mirror_imp = __import__("mirror", fromlist=[name])
