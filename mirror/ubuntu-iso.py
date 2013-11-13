@@ -6,7 +6,7 @@ class UbuntuISOMirrorRunner(RsyncMirrorRunner):
   #source = 'rsync://mirror.lstn.net/ubuntu-releases/'
   #source = 'rsync://mirrors.rit.edu/ubuntu-releases/'
 
-  rsync_delete = False
+  #rsync_delete = False
 
 #SRV1=rsync://ubuntu.osuosl.org/ubuntu-releases
 #SRV2=rsync://rsync.releases.ubuntu.com/releases/
