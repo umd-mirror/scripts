@@ -5,3 +5,5 @@
 - /entropy/.config
 - iso/*5.3*
 - iso/daily
+- .*.tmp-entropy-txc.*
+- .*.tbz2.*
