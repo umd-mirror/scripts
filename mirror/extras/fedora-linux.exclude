@@ -7,6 +7,8 @@
 - releases/12
 - releases/13
 - releases/14
+- releases/16
+- releases/17
 - updates/7
 - updates/8
 - updates/9
@@ -15,6 +17,8 @@
 - updates/12
 - updates/13
 - updates/14
+- updates/15
+- updates/16
 - updates/testing
 - releases/test
 - releases/*/*/ppc*
@@ -24,7 +28,6 @@
 - core
 - extras
 - */debug
-- */repoview
 - */source
 - */SRPMS*
 - **/Live
