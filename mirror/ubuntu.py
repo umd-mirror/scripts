@@ -3,8 +3,8 @@ from . import RsyncMirrorRunner, APTMirrorRunner
 class UbuntuMirrorRunner(RsyncMirrorRunner):
   source = 'rsync://archive.ubuntu.com/ubuntu/'
 
-  rsync_delete_delay = True
-  rsync_delay_updates = True
+  rsync_delete_delay = False
+  rsync_delay_updates = False
 
   rsync_filter_list = ['- /Archive-Update-in-Progress-*']
 
