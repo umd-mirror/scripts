@@ -1,4 +1,5 @@
 # ...
+import datetime
 import os
 import re
 import shutil
@@ -47,7 +48,7 @@ def get_lock(module):
 
   return True
 
-def rsync(source, dest, archive=False, verbose=False, preserve_perm=False, dry_run=False, delete_excluded=False, filter_from=None, delete=False, progress=False, delete_delay=False, delay_updates=False, hardlinks=False):
+def rsync(source, dest, archive=False, verbose=False, preserve_perm=False, dry_run=False, delete_excluded=False, filter_from=None, delete=False, progress=False, delete_delay=False, delay_updates=False, hardlinks=False, timeout=None, safe_links=False):
   opts = [
     '-rlt' if archive else None,
     '--delete' if delete else None,
@@ -59,7 +60,9 @@ def rsync(source, dest, archive=False, verbose=False, preserve_perm=False, dry_r
     '--filter=. %s' % filter_from if filter_from else None,
     '--delete-delay' if delete_delay else None,
     '--delay-updates' if delay_updates else None,
-    '-H' if hardlinks else None
+    '-H' if hardlinks else None,
+    '--timeout=%d' % timeout if timeout else None,
+    '--safe-links' if safe_links else None
   ]
 
   opts = [opt for opt in opts if opt] # remove null fields
@@ -73,9 +76,10 @@ def rsync(source, dest, archive=False, verbose=False, preserve_perm=False, dry_r
   if retcode != 0:
     raise Exception("rsync failed")
 
-class MirrorRunner:
+class MirrorRunner(object):
   base = None # Full path to target
   base_subdir = None # Path within mirrors directory (base overrides)
+  status_directory = None # Path where mirror.umd.edu.*.txt will go
 
   def __init__(self):
     self.module_name = self.__class__.__module__[7:]
@@ -97,7 +101,31 @@ class MirrorRunner:
     pass
 
   def post_update(self, verbose, dry_run):
-    pass
+    timestamp = datetime.datetime.utcnow()
+
+    bytes = int(subprocess.check_output(['du', '-sB1', self.base + '/', '--exclude=lost+found']).split("\t")[0])
+    gigabytes = bytes/1024/1024/1024
+    print("SIZE: " + str(gigabytes) + " GB")
+
+    if self.status_directory is not None:
+      statdir = self.status_directory
+    else:
+      statdir = self.base
+
+    if not dry_run:
+      tmp_size_path = os.path.join(statdir, "mirror.umd.edu.size.txt.tmp")
+      size_file = open(tmp_size_path, 'w')
+      size_file.write("{0} ({1} GB)\n".format(bytes, gigabytes))
+      size_file.close()
+
+      os.rename(tmp_size_path, os.path.join(statdir, "mirror.umd.edu.size.txt"))
+
+      tmp_timestamp_path = os.path.join(statdir, "mirror.umd.edu.timestamp.txt.tmp")
+      timestamp_file = open(tmp_timestamp_path, 'w')
+      timestamp_file.write(timestamp.strftime("%s (%c)") + "\n")
+      timestamp_file.close()
+
+      os.rename(tmp_timestamp_path, os.path.join(statdir, "mirror.umd.edu.timestamp.txt"))
 
 class RsyncMirrorRunner(MirrorRunner):
   source = None
@@ -111,32 +139,41 @@ class RsyncMirrorRunner(MirrorRunner):
   rsync_delay_updates = False
   rsync_filter_from = None
   rsync_filter_list = None
-
+  rsync_timeout = 600
+  rsync_safe_links = True
 
   def update(self, verbose, dry_run):
-    if self.rsync_filter_list is not None:
-      if self.rsync_filter_from is not None:
-        raise Exception("you cannot specify both rsync_filter_from and rsync_filter_list")
-      (filter_fd, self.rsync_filter_from) = tempfile.mkstemp(prefix=self.module_name)
-      filter = os.fdopen(filter_fd, 'w')
-      filter.write("\n".join(self.rsync_filter_list))
-      filter.close()
+    all_filters = []
+    all_filters.append('P /lost+found')
+    all_filters.append('P /mirror.umd.edu.*.txt')
 
-    rsync(self.source, self.base, self.rsync_archive, verbose, self.rsync_preserve_perm, dry_run, self.rsync_delete_excluded, self.rsync_filter_from, self.rsync_delete, verbose, self.rsync_delete_delay, self.rsync_delay_updates, self.rsync_preserve_hardlinks)
+    if self.rsync_filter_from is not None:
+      all_filters.extend(open(self.rsync_filter_from, "r").read().split("\n"))
 
     if self.rsync_filter_list is not None:
-      os.unlink(self.rsync_filter_from)
+      all_filters.extend(self.rsync_filter_list)
 
-    if not dry_run:
-      subprocess.call("date > %s/mirror.umd.edu.txt" % self.base, shell=True)
+    (combined_filter_fd, combined_filter_path) = tempfile.mkstemp(prefix=self.module_name)
+    combined_filter = os.fdopen(combined_filter_fd, 'w')
+    combined_filter.write("\n".join(all_filters))
+    combined_filter.flush()
+
+    rsync(self.source, self.base, self.rsync_archive, verbose, self.rsync_preserve_perm, dry_run, self.rsync_delete_excluded, combined_filter_path, self.rsync_delete, verbose, self.rsync_delete_delay, self.rsync_delay_updates, self.rsync_preserve_hardlinks, self.rsync_timeout, self.rsync_safe_links)
+
+    os.unlink(combined_filter_path)
 
 class APTMirrorRunner(MirrorRunner):
+  ALL_UBUNTU_RELEASES = ['warty', 'hoary', 'breezy', 'dapper', 'edgy', 'feisty', 'gutsy', 'hardy', 'intrepid', 'jaunty', 'karmic', 'lucid', 'maverick', 'natty', 'oneiric', 'precise', 'quantal', 'raring', 'saucy']
+  LTS_UBUNTU_RELEASES = ['dapper', 'hardy', 'lucid', 'precise']
+
   apt_releases = []
   apt_architectures = []
   apt_slots = ['']
   apt_parts = []
 
   def pre_update(self, verbose, dry_run):
+    MirrorRunner.pre_update(self, verbose, dry_run)
+
     (apt_cfg_fd, self.apt_cfg_path) = tempfile.mkstemp(prefix=self.module_name)
     apt_cfg = os.fdopen(apt_cfg_fd, 'w')
     
@@ -180,9 +217,10 @@ class APTMirrorRunner(MirrorRunner):
 
     source_match = re.match('(https?://)?([^/]+)(/.+)?', self.source)
     if source_match:
-      subprocess.call("date > %s/%s/mirror.umd.edu.txt" % (basedir, source_match.group(2)), shell=True)
+      self.status_directory = os.path.join(basedir, source_match.group(2))
 
   def post_update(self, verbose, dry_run):
     os.unlink(self.apt_cfg_path)
+    MirrorRunner.post_update(self, verbose, dry_run)
 
 
