@@ -68,10 +68,15 @@ def rsync(source, dest, archive=False, verbose=False, preserve_perm=False, dry_r
   opts = [opt for opt in opts if opt] # remove null fields
 
   rsync_cmd = ["/home/mirror/scripts/rsync-no-vanished"]
+  #rsync_cmd = ["/usr/bin/rsync"]
   rsync_cmd.extend(opts)
   rsync_cmd.extend([source, dest])
 
-  retcode = subprocess.call(rsync_cmd)
+  #retcode = subprocess.call(rsync_cmd)
+
+  process = subprocess.Popen(rsync_cmd,
+                             bufsize=0)
+  retcode = process.wait()
 
   if retcode != 0:
     raise Exception("rsync failed")
