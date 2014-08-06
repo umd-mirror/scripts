@@ -164,6 +164,7 @@ class RsyncMirrorRunner(MirrorRunner):
       all_filters.extend(self.rsync_filter_list)
 
     (combined_filter_fd, combined_filter_path) = tempfile.mkstemp(prefix=self.module_name)
+    os.fchmod(combined_filter_fd, 0644)
     combined_filter = os.fdopen(combined_filter_fd, 'w')
     combined_filter.write("\n".join(all_filters))
     combined_filter.flush()
