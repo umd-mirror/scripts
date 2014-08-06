@@ -155,6 +155,7 @@ class RsyncMirrorRunner(MirrorRunner):
     all_filters = []
     all_filters.append('P /lost+found')
     all_filters.append('P /mirror.umd.edu.*.txt')
+    all_filters.append('- .~tmp~')
 
     if self.rsync_filter_from is not None:
       all_filters.extend(open(self.rsync_filter_from, "r").read().split("\n"))
