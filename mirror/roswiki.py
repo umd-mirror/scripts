@@ -1,8 +1,7 @@
-from . import MirrorRunner
-import subprocess
+from . import RsyncMirrorRunner
 
-class RosWikiMirrorRunner(MirrorRunner):
-  def update(self, verbose, dry_run):
-    if not dry_run:
-      subprocess.check_call(['/export/vg2/mirror_ros-www/wiki.sh'])
+class RosWikiMirrorRunner(RsyncMirrorRunner):
+  base_subdir = 'ros-wiki'
+  source = 'rsync://wiki.ros.org/wiki_mirror/'
+  rsync_filter_list = ['P /doc']
 
