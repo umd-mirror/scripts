@@ -6,7 +6,7 @@ import shutil
 import subprocess
 import tempfile
 
-basedir = '/home/mirror/archives'
+basedir = '/pool/mirrors'
 EXTRAS = '/home/mirror/scripts/mirror/extras'
 
 def is_disabled():
@@ -103,14 +103,18 @@ class MirrorRunner(object):
   def post_update(self, verbose, dry_run):
     timestamp = datetime.datetime.utcnow()
 
-    bytes = int(subprocess.check_output(['du', '-sB1', self.base + '/', '--exclude=lost+found']).split("\t")[0])
-    gigabytes = bytes/1024/1024/1024
-    print("SIZE: " + str(gigabytes) + " GB")
-
     if self.status_directory is not None:
       statdir = self.status_directory
     else:
       statdir = self.base
+
+    if os.path.ismount(statdir):
+      bytes = int(subprocess.check_output(['sudo', '/usr/local/bin/get_lused.sh', statdir]))
+    else:
+      bytes = int(subprocess.check_output(['du', '-sB1', '--apparent-size', statdir + '/', '--exclude=lost+found']).split("\t")[0])
+
+    gigabytes = bytes/1024/1024/1024
+    print("SIZE: " + str(gigabytes) + " GB")
 
     if not dry_run:
       tmp_size_path = os.path.join(statdir, "mirror.umd.edu.size.txt.tmp")
@@ -180,7 +184,8 @@ class APTMirrorRunner(MirrorRunner):
     #apt_header = os.path.join(EXTRAS, 'apt_header')
 
     apt_cfg.write("set base_path    /home/mirror/var/apt-mirror-%s\n" % self.module_name)
-    apt_cfg.write("set mirror_path  %s\n" % basedir)
+    #apt_cfg.write("set mirror_path  %s\n" % basedir)
+    apt_cfg.write("set mirror_path  /home/mirror/apt\n")
     apt_cfg.write("set _autoclean   1\n")
 
     #shutil.copyfileobj(open(apt_header, 'rb'), apt_cfg)
@@ -217,7 +222,7 @@ class APTMirrorRunner(MirrorRunner):
 
     source_match = re.match('(https?://)?([^/]+)(/.+)?', self.source)
     if source_match:
-      self.status_directory = os.path.join(basedir, source_match.group(2))
+      self.status_directory = os.path.join("/home/mirror/apt", source_match.group(2))
 
   def post_update(self, verbose, dry_run):
     os.unlink(self.apt_cfg_path)
