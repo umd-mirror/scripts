@@ -73,11 +73,11 @@ if sys.argv[1] == 'hourly':
   #begin_hour = (transfers[0][0] / 3600) % 24
   begin_halfhour = datetime.datetime.now().hour * 2 + datetime.datetime.now().minute / 30
   label_str = ','.join([str((h - begin_halfhour + 48) % 48) for h in range(0, 47, 8)])
-  print "<img src=\"http://chart.apis.google.com/chart?chxl=1:|00|04|08|12|16|20&chxp=1,%s&chxr=0,0,%d|1,0,48&chxs=1,676767,11.5,0,lt,676767&chxt=y,x&chs=400x225&cht=lc&chco=3D7930&chd=t:%s&chg=14.3,-1,1,1&chls=2,4,0&chm=B,C5D4B5BB,0,0,0&chtt=Throughput (%s, Mb/s)\"/>" % (label_str, scale, format_str, label)
+  print "<img src=\"http://chart.apis.google.com/chart?chxl=1:|00|04|08|12|16|20&chxp=1,%s&chxr=0,0,%d|1,0,48&chxs=1,676767,11.5,0,lt,676767&chxt=y,x&chs=400x225&cht=lc&chco=3D7930&chd=t:%s&chg=14.3,-1,1,1&chls=2,4,0&chm=B,C5D4B5BB,0,0,0&chtt=Throughput (%s, Mb/s)\" alt=\"Graph of throughput %s\"/>" % (label_str, scale, format_str, label, label)
 else:
   #begin_minute = (transfers[0][0] / 60) % 60
   begin_minute = datetime.datetime.now().minute
   label_str = ','.join([str((m - begin_minute + 60) % 60) for m in range(0, 59, 10)])
-  print '<img src="http://chart.apis.google.com/chart?chxl=1:|%%3A00|%%3A10|%%3A20|%%3A30|%%3A40|%%3A50&&chxp=1,%s&chxr=0,0,%d|1,0,60&chxs=1,676767,11.5,0,lt,676767&chxt=y,x&chs=400x225&cht=lc&chco=3D7930&chd=t:%s&chg=-1,-1,0,0&chls=2,4,0&chm=B,C5D4B5BB,0,0,0&chtt=Throughput (%s, Mb/s)"/>' % (label_str, scale, format_str, label)
+  print '<img src="http://chart.apis.google.com/chart?chxl=1:|%%3A00|%%3A10|%%3A20|%%3A30|%%3A40|%%3A50&&chxp=1,%s&chxr=0,0,%d|1,0,60&chxs=1,676767,11.5,0,lt,676767&chxt=y,x&chs=400x225&cht=lc&chco=3D7930&chd=t:%s&chg=-1,-1,0,0&chls=2,4,0&chm=B,C5D4B5BB,0,0,0&chtt=Throughput (%s, Mb/s)" alt=\"Graph of throughput %s\"/>' % (label_str, scale, format_str, label, label)
 
 
