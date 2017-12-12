@@ -1,7 +1,7 @@
 from . import RsyncMirrorRunner
 
 class LinuxMintPackagesMirrorRunner(RsyncMirrorRunner):
-  source = 'rsync://packages.linuxmint.com/packages/'
+  source = 'rsync://rsync-packages.linuxmint.com/packages/'
 
   base_subdir = 'linuxmint/packages'
 

@@ -1,4 +1,4 @@
 from . import RsyncMirrorRunner
 
 class XBMCMirrorRunner(RsyncMirrorRunner):
-  source = 'rsync://rsync.xbmc.org/main/'
+  source = 'rsync://ftp.heanet.ie/mirrors/xbmc/'

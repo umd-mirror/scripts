@@ -263,7 +263,7 @@ while(<CONFIG>) {
 	next;
     }
 
-    if($config_line =~ /deb-(alpha|amd64|armel|armhf|arm|hppa|hurd-i386|i386|ia64|lpia|m68k|mipsel|mips|powerpc|s390|sh|sparc)/) {
+    if($config_line =~ /deb-(alpha|amd64|armel|armhf|arm64|arm|hppa|hurd-i386|i386|ia64|lpia|m68k|mipsel|mips|powerpc|s390|sh|sparc)/) {
 	push @config_binaries, [$1, @config_line];
 	next;
     }

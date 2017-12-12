@@ -174,8 +174,8 @@ class RsyncMirrorRunner(MirrorRunner):
     os.unlink(combined_filter_path)
 
 class APTMirrorRunner(MirrorRunner):
-  ALL_UBUNTU_RELEASES = ['warty', 'hoary', 'breezy', 'dapper', 'edgy', 'feisty', 'gutsy', 'hardy', 'intrepid', 'jaunty', 'karmic', 'lucid', 'maverick', 'natty', 'oneiric', 'precise', 'quantal', 'raring', 'saucy', 'trusty']
-  LTS_UBUNTU_RELEASES = ['dapper', 'hardy', 'lucid', 'precise', 'trusty']
+  ALL_UBUNTU_RELEASES = ['warty', 'hoary', 'breezy', 'dapper', 'edgy', 'feisty', 'gutsy', 'hardy', 'intrepid', 'jaunty', 'karmic', 'lucid', 'maverick', 'natty', 'oneiric', 'precise', 'quantal', 'raring', 'saucy', 'trusty', 'utopic', 'vivid', 'wily', 'xenial', 'yakkety', 'zesty', 'artful']
+  LTS_UBUNTU_RELEASES = ['dapper', 'hardy', 'lucid', 'precise', 'trusty', 'xenial']
 
   apt_releases = []
   apt_architectures = []

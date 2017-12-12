@@ -1,4 +1,4 @@
 from . import RsyncMirrorRunner
 
 class FindBugsMirrorRunner(RsyncMirrorRunner):
-  source = 'rsync://rsync.mirrorservice.org/download.sourceforge.net/pub/sourceforge/f/project/fi/findbugs/'
+  source = 'rsync://rsync.mirrorservice.org/downloads.sourceforge.net/f/fi/findbugs/'
