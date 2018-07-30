@@ -4,7 +4,8 @@ import os, sys
 from os.path import join
 import pickle
 import re
-import ConfigParser
+from ConfigParser import SafeConfigParser
+import os
 import pprint
 import time
 import xmlrpclib
@@ -179,7 +180,7 @@ def parse_category(conf, section, item, crawl):
 
 def config(cfg, item, crawl=True):
     broken = False
-    conf = ConfigParser.ConfigParser()
+    conf = SafeConfigParser(os.environ)
     conf.read(cfg)
 
     try:
