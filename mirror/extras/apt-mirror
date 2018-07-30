@@ -526,6 +526,7 @@ close FILES_MD5;
 ## Main download
 
 print get_variable("mirror_path");
+print "\n";
 chdir get_variable("mirror_path") or die("apt-mirror: can't chdir to mirror");
 
 my $need_bytes = 0;
