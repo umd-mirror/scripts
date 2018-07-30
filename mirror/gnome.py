@@ -7,5 +7,5 @@ class GNOMEMirrorRunner(RsyncMirrorRunner):
   rsync_preserve_perm = True
 
   def pre_update(self, verbose, dry_run):
-    os.environ['RSYNC_PASSWORD'] = open(os.path.join(EXTRAS, 'gnome-password'), "r").read().strip()
+    os.environ['RSYNC_PASSWORD'] = open(os.path.join(EXTRAS, 'gnome-rsync.password'), "r").read().strip()
 

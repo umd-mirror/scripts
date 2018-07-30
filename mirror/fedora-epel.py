@@ -15,6 +15,7 @@ class FedoraEPELMirrorRunner(RsyncMirrorRunner):
 
   def post_update(self, verbose, dry_run):
     if not dry_run:
-      subprocess.call([os.path.join(EXTRAS, 'report_mirror'), '-c', os.path.join(EXTRAS, 'report_mirror.conf')])
+      my_env = os.environ.copy()
+      my_env["FEDORA_MIRROR_REPORT_PASSWORD"] = open(os.path.join(EXTRAS, 'fedora-report-mirror.password'), "r").read().strip()
+      subprocess.call([os.path.join(EXTRAS, 'report_mirror'), '-c', os.path.join(EXTRAS, 'report_mirror.conf')], env=my_env)
     RsyncMirrorRunner.post_update(self, verbose, dry_run)
-
