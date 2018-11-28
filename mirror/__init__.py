@@ -14,7 +14,7 @@ def is_disabled():
 
 def get_lock(module):
   lock_path = '/home/mirror/scripts/mirror/%s.lock' % module
-  
+
   if os.path.exists(lock_path):
     # try to claim the lock when the holder has died
     lock_file = open(lock_path, 'r')
@@ -48,7 +48,7 @@ def get_lock(module):
 
   return True
 
-def rsync(source, dest, archive=False, verbose=False, preserve_perm=False, dry_run=False, delete_excluded=False, filter_from=None, delete=False, progress=False, delete_delay=False, delay_updates=False, hardlinks=False, timeout=None, safe_links=False):
+def rsync(source, dest, archive=False, verbose=False, preserve_perm=False, dry_run=False, delete_excluded=False, filter_from=None, delete=False, progress=False, delete_delay=False, delay_updates=False, hardlinks=False, timeout=None, safe_links=False, password_file=None):
   opts = [
     '-rlt' if archive else None,
     '--delete' if delete else None,
@@ -62,7 +62,8 @@ def rsync(source, dest, archive=False, verbose=False, preserve_perm=False, dry_r
     '--delay-updates' if delay_updates else None,
     '-H' if hardlinks else None,
     '--timeout=%d' % timeout if timeout else None,
-    '--safe-links' if safe_links else None
+    '--safe-links' if safe_links else None,
+    '--password-file=%s' % password_file if password_file else None
   ]
 
   opts = [opt for opt in opts if opt] # remove null fields
@@ -71,6 +72,9 @@ def rsync(source, dest, archive=False, verbose=False, preserve_perm=False, dry_r
   #rsync_cmd = ["/usr/bin/rsync"]
   rsync_cmd.extend(opts)
   rsync_cmd.extend([source, dest])
+
+  if verbose:
+    print("rsync command: ", ' '.join(rsync_cmd))
 
   #retcode = subprocess.call(rsync_cmd)
 
@@ -150,6 +154,7 @@ class RsyncMirrorRunner(MirrorRunner):
   rsync_filter_list = None
   rsync_timeout = 600
   rsync_safe_links = True
+  rsync_password_file = None
 
   def update(self, verbose, dry_run):
     all_filters = []
@@ -169,7 +174,7 @@ class RsyncMirrorRunner(MirrorRunner):
     combined_filter.write("\n".join(all_filters))
     combined_filter.flush()
 
-    rsync(self.source, self.base, self.rsync_archive, verbose, self.rsync_preserve_perm, dry_run, self.rsync_delete_excluded, combined_filter_path, self.rsync_delete, verbose, self.rsync_delete_delay, self.rsync_delay_updates, self.rsync_preserve_hardlinks, self.rsync_timeout, self.rsync_safe_links)
+    rsync(self.source, self.base, self.rsync_archive, verbose, self.rsync_preserve_perm, dry_run, self.rsync_delete_excluded, combined_filter_path, self.rsync_delete, verbose, self.rsync_delete_delay, self.rsync_delay_updates, self.rsync_preserve_hardlinks, self.rsync_timeout, self.rsync_safe_links, self.rsync_password_file)
 
     os.unlink(combined_filter_path)
 
