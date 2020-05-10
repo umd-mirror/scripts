@@ -10,7 +10,8 @@ class FedoraEPELMirrorRunner(RsyncMirrorRunner):
   # source = 'rsync://fedora-archives.ibiblio.org/fedora-epel/'
   # source = 'rsync://ftp.heanet.ie/fedora-epel/'
   source = 'rsync://mirror.rit.edu/epel/'
-  rsync_filter_list = ['- debug', '- /testing', '- SRPMS', '- /3', '- /4', '- /5']
+  rsync_filter_list = ['- debug', '- SRPMS', '- /3', '- /4', '- /5', '- /4AS', '- /4ES', '- /4WS', '- /5Client', '- /5Server']
+  #rsync_filter_list = ['- debug', '- /testing', '- SRPMS', '- /3', '- /4', '- /5']
   rsync_preserve_hardlinks = True
 
   def post_update(self, verbose, dry_run):
