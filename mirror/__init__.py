@@ -118,7 +118,8 @@ class MirrorRunner(object):
       statdir = self.base
 
     if os.path.ismount(statdir):
-      bytes = int(subprocess.check_output(['sudo', '/usr/local/bin/get_lused.sh', statdir]))
+      # bytes = int(subprocess.check_output(['sudo', '/usr/local/bin/get_lused.sh', statdir]))
+      bytes = int(subprocess.check_output(['/sbin/zfs', 'get', '-H', '-o', 'value', '-p', 'lused', statdir]))
     else:
       bytes = int(subprocess.check_output(['du', '-sB1', '--apparent-size', statdir + '/', '--exclude=lost+found']).split("\t")[0])
 
