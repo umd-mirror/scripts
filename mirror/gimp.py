@@ -1,4 +1,5 @@
 from . import RsyncMirrorRunner
+import os
 
 class GIMPMirrorRunner(RsyncMirrorRunner):
   source = 'rsync://mirror-mdu-edu@download.gimp.org/gimp/pub'
