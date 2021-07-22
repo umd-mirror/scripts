@@ -2,7 +2,7 @@ from . import RsyncMirrorRunner, EXTRAS
 import os
 
 class GIMPMirrorRunner(RsyncMirrorRunner):
-  source = 'rsync://mirror-mdu-edu@download.gimp.org/gimp/pub'
+  source = 'rsync://mirror-mdu-edu@download.gimp.org/gimp/pub/'
   rsync_delete_delay = True
   rsync_preserve_perm = True
 
