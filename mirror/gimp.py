@@ -1,4 +1,4 @@
-from . import RsyncMirrorRunner
+from . import RsyncMirrorRunner, EXTRAS
 import os
 
 class GIMPMirrorRunner(RsyncMirrorRunner):
