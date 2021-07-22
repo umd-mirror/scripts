@@ -7,3 +7,4 @@
 - iso/daily
 - .*.tmp-entropy-txc.*
 - .*.tbz2.*
+- /lost+found
